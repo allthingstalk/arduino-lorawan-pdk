@@ -1,6 +1,22 @@
-# LoRaWAN track and trace
+# arduino-lorawan-pdk
 
-This repository contains multiple examples for the sodaq one board, including a track and trace application.
+This repository contains examples and experiment sketches for the AllThingsTalk LoRaWAN Product Kit.
 
-Current version: 1.0
+> It is to be used in conjunction with the [arduino-lorawan-sdk](https://github.com/allthingstalk/arduino-lorawan-sdk) which contains all basic functionality.
 
+## Hardware
+
+This library has been developed for:
+
+- Sodaq ONE
+- Microchip LoRa modem
+
+## Installation
+
+Download the source code and copy the content of the zip file to your arduino libraries folder (usually found at <arduinosketchfolder>/libraries).
+
+## Example sketches
+
+* `push-button-containers` basic push button example using preset [container definitions](http://docs.allthingstalk.com/developers/data/default-payload-conversion/)
+* `push-button-payload-builder` basic push button example using our [custom binary payload decoding](http://docs.allthingstalk.com/developers/data/custom-payload-conversion/)
+* `track-and-trace-containers` GPS tracking device
