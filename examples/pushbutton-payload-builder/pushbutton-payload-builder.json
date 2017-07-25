@@ -1,8 +1,8 @@
 {
   "sense": [
     {
-      "asset": "15",
-      "value": {"byte": 0, "type": "integer"}
+      "asset": "1",
+      "value": {"byte": 0, "type": "boolean"}
     }
   ]
 }

@@ -1,17 +1,24 @@
-/*
-  Copyright 2015-2016 AllThingsTalk
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*/
-
+/*    _   _ _ _____ _    _              _____     _ _     ___ ___  _  __
+ *   /_\ | | |_   _| |_ (_)_ _  __ _ __|_   _|_ _| | |__ / __|   \| |/ /
+ *  / _ \| | | | | | ' \| | ' \/ _` (_-< | |/ _` | | / / \__ \ |) | ' <
+ * /_/ \_\_|_| |_| |_||_|_|_||_\__, /__/ |_|\__,_|_|_\_\ |___/___/|_|\_\
+ *                             |___/
+ *
+ * Copyright 2017 AllThingsTalk
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ 
 #include <ATT_IOT_LoRaWAN.h>
 #include "keys.h"
 #include <MicrochipLoRaModem.h>
@@ -22,11 +29,10 @@
 #define debugSerial SerialUSB
 #define loraSerial Serial1
 
-MicrochipLoRaModem Modem(&loraSerial, &debugSerial);
-ATTDevice Device(&Modem, &debugSerial);
+MicrochipLoRaModem modem(&loraSerial, &debugSerial);
+ATTDevice device(&modem, &debugSerial, false, 7000);  // minimum time between 2 messages set at 7000 milliseconds
 
-static uint8_t sendBuffer[51];
-ATT_PB payload(51);  // buffer is set to the same size as the sendBuffer[]
+PayloadBuilder payload(device);
 
 bool sensorVal = false;
 
@@ -37,28 +43,30 @@ void setup()
   pinMode(BUTTON, INPUT_PULLUP);  // initialize the digital pin as an input
   pinMode(LED_GREEN, OUTPUT);
   
-  debugSerial.begin(SERIAL_BAUD);                   		// set baud rate of the default serial debug connection
-  loraSerial.begin(Modem.getDefaultBaudRate());   			// set baud rate of the serial connection between Mbili and LoRa modem
-  while((!debugSerial) && (millis()) < 30000){}         // wait until serial bus is available, so we get the correct logging on screen
+  debugSerial.begin(SERIAL_BAUD);
+  while((!debugSerial) && (millis()) < 30000){}  // wait until the serial bus is available
+  
+  loraSerial.begin(modem.getDefaultBaudRate());  // set baud rate of the serial connection to match the modem
+  while((!loraSerial) && (millis()) < 10000){}   // wait until the serial bus is available
 
-  while(!Device.InitABP(DEV_ADDR, APPSKEY, NWKSKEY));
+  while(!device.initABP(DEV_ADDR, APPSKEY, NWKSKEY));
   debugSerial.println("Ready to send data");
   digitalWrite(LED_GREEN, HIGH);
   
-  SendValue(0);  // send initial state
+  // send initial state
+  sendValue(0);
 }
 
-bool SendValue(bool val)
+bool sendValue(bool val)
 {
   payload.reset();
   payload.addBoolean(val);
-  payload.copy(sendBuffer);
+  bool res = payload.addToQueue(false);  // without ACK
   
-  bool res = Device.AddToQueue(&sendBuffer, payload.getSize(), false);  // without ACK!
-  
-  while(Device.ProcessQueue() > 0) {
+  while(device.processQueue() > 0)
+  {
     debugSerial.print("QueueCount: ");
-    debugSerial.println(Device.QueueCount());
+    debugSerial.println(device.queueCount());
     delay(10000);
   }
   return res;
@@ -67,9 +75,9 @@ bool SendValue(bool val)
 void loop() 
 {
   bool sensorRead = digitalRead(BUTTON);  // read status Digital Sensor
-  if (sensorRead == 0 )  // verify if value has changed
+  if(sensorRead == 0 )  // verify if value has changed
   {
-    if(SendValue(!sensorVal) == true)
+    if(sendValue(!sensorVal) == true)
     {
       digitalWrite(LED_GREEN, sensorVal);
       sensorVal = !sensorVal;
