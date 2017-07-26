@@ -20,3 +20,14 @@ Download the source code and copy the content of the zip file to your arduino li
 * `push-button-containers` basic push button example using preset [container definitions](http://docs.allthingstalk.com/developers/data/default-payload-conversion/)
 * `push-button-payload-builder` basic push button example using our [custom binary payload decoding](http://docs.allthingstalk.com/developers/data/custom-payload-conversion/)
 * `track-and-trace-containers` GPS tracking device
+
+### Sample sketches
+
+Short samples of how to use the onboard sensors of the Sodaq ONE
+
+* `accelerometer`
+* `battery`
+* `compass`
+* `magnetometer`
+* `push-button`
+* `rgbled`
