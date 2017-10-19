@@ -18,7 +18,7 @@ Download the source code and copy the content of the zip file to your arduino li
 ## Example sketches
 
 * `push-button-containers` basic push button example using preset [container definitions](http://docs.allthingstalk.com/developers/data/default-payload-conversion/)
-* `push-button-payload-builder` basic push button example using our [custom binary payload decoding](http://docs.allthingstalk.com/developers/data/custom-payload-conversion/)
+* `push-button-binary-payload` basic push button example using our [custom binary payload decoding](http://docs.allthingstalk.com/developers/data/custom-payload-conversion/)
 * `track-and-trace-containers` GPS tracking device
 
 ### Sample sketches
