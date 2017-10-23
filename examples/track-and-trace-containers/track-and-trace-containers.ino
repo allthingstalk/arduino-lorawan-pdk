@@ -87,14 +87,7 @@ struct gpsPayload
   float spd;
 };
 
-struct batPayload
-{
-  byte msg = 0x01;
-  short bat;
-};
-
 gpsPayload gpsData;
-batPayload batData;
 
 void calibrate(int16_t &x, int16_t &y)
 {
@@ -363,12 +356,9 @@ bool trySendBatteryState()
 
   debugSerial.println("reading battery level");
 
-  batData.bat = batteryStatus();
+  uint16_t batdata = batteryStatus();
 
-  debugSerial.print("#bytes in payload: ");
-  debugSerial.println(sizeof(batData));
-
-  container.addToQueue(&batData, BATTERY_LEVEL, false);  // without ACK
+  container.addToQueue(batdata, BATTERY_LEVEL, false);  // without ACK
 
   while(device.processQueue() > 0)
   {
