@@ -356,7 +356,7 @@ bool trySendBatteryState()
 
   debugSerial.println("reading battery level");
 
-  uint16_t batdata = batteryStatus();
+  int16_t batdata = batteryStatus();
 
   container.addToQueue(batdata, BATTERY_LEVEL, false);  // without ACK
 
