@@ -17,9 +17,8 @@ Download the source code and copy the content of the zip file to your arduino li
 
 ## Example sketches
 
-* `push-button-containers` basic push button example using preset [container definitions](http://docs.allthingstalk.com/developers/data/default-payload-conversion/)
-* `push-button-binary-payload` basic push button example using our [custom binary payload decoding](http://docs.allthingstalk.com/developers/data/custom-payload-conversion/)
-* `track-and-trace-containers` GPS tracking device
+* `push-button` basic push button example using the onboard button
+* `track-and-trace` GPS tracking device
 
 ### Sample sketches
 
@@ -31,3 +30,22 @@ Short samples of how to use the onboard sensors of the Sodaq ONE
 * `magnetometer`
 * `push-button`
 * `rgbled`
+
+### Sending data
+
+There are three ways to send your data to AllThingsTalk
+
+* `Standardized containers`
+* `Cbor payload`
+* `Binary payload`
+
+You can simply select the method you prefer by (un)commenting the methods at the start of the sketch.
+
+```
+// Select your preferred method of sending data
+//#define CONTAINERS
+#define CBOR
+//#define BINARY
+```
+
+By default, Cbor will be used. For more information on payloads, please [check here](https://github.com/allthingstalk/arduino-lorawan-sdk/blob/master/README.md)
