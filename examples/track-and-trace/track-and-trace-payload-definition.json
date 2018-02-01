@@ -1,0 +1,26 @@
+{
+  "sense": [{
+    "switch": {"byte": 0, "byteorder": "little", "bytelength": 2},
+    "on": [
+      {
+        "case": 0,
+        "comment" : "GPS + speed",
+        "do": [
+          {"comment": "GPS", "asset": "9", "value": {
+            "latitude": {"byte": 2, "byteorder": "little", "bytelength": 4, "type": "number"},
+            "longitude": {"byte": 6, "byteorder": "little", "bytelength": 4, "type": "number"},
+            "altitude": {"byte": 10, "byteorder": "little", "bytelength": 4, "type": "number"}
+          }},
+          {"comment": "Speed", "asset": "16", "value": {"byte": 14, "bytelength": 4, "byteorder": "little", "type": "number"}}
+        ]
+      },
+      {
+        "case": 1,
+        "comment" : "Battery status",
+        "do": [
+          {"comment": "Battery level", "asset": "14", "value": {"byte": 2, "bytelength": 2, "byteorder": "little", "type": "integer"}}
+        ]
+      }
+    ]}
+  ]
+}

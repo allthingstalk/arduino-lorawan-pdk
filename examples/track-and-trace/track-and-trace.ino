@@ -457,6 +457,11 @@ void sendValues()
   #endif
   
   #ifdef BINARY
+  payload.reset();
+  payload.addInteger(0);  // Payload identifier
+  payload.addGps(float(sodaq_gps.getLat()), float(sodaq_gps.getLon()), float(sodaq_gps.getAlt()));
+  payload.addNumber((float)sodaq_gps.getSpeed());
+  process();
   #endif
 }
 
@@ -484,6 +489,10 @@ bool sendBatteryState()
   #endif
   
   #ifdef BINARY
+  payload.reset();
+  payload.addInteger(1);  // Payload identifier
+  payload.addInteger(batdata);
+  payload.addToQueue(false);
   #endif
   
   modem.sleep();
