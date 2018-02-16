@@ -102,7 +102,7 @@ void sendValue(bool val)
   #ifdef CBOR
   payload.reset();
   payload.map(1);
-  payload.addBoolean(val, "1");
+  payload.addBoolean(val, "3");
   payload.addToQueue(false);
   process();
   #endif
